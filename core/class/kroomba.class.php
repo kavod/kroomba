@@ -72,6 +72,9 @@ class kroomba extends eqLogic {
   //   }
   // }
 
+  public function preSave() {
+    $this->discover();
+  }
   public function postSave() {
     $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'status');
     if (!is_object($cmdlogic)) {
@@ -181,13 +184,23 @@ class kroomba extends eqLogic {
   //   return ;
   // }
 
+  public function discover() {
+    $node_path = realpath(dirname(__FILE__) . '/../../node');
+    $cmd = 'cd ' . $node_path . ' && node discover.js';
+    log::add('kroomba', 'debug', 'Découverte des roombas : ' . $cmd);
+    exec($cmd . ' 2>&1',$result);
+    $roomba_ip = preg_match('/IP:(\d+\.\d+\.\d+\.\d+)/',$result[0],$matches);
+    log::add('kroomba','debug','Résultat:' + $roomba_ip);
+    $this->setConfiguration('roomba_ip', $roomba_ip);
+  }
+
   public function mission() {
     $node_path = realpath(dirname(__FILE__) . '/../../node');
     $cmd = 'cd ' . $node_path . ' && node mission.js '
       . $this->getConfiguration('username','') . ' '
       . $this->getConfiguration('password','') . ' '
       . $this->getConfiguration('roomba_ip','');
-    log::add('kroomba', 'debug', 'Lancement mission : ' . $cmd);
+    log::add('kroomba', 'debug', 'Lancement mission : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
     exec($cmd . ' 2>&1',$result);
     log::add('kroomba_node', 'debug', 'Résultat : ' . implode($result));
 
@@ -210,7 +223,7 @@ class kroomba extends eqLogic {
       . $this->getConfiguration('username','') . ' '
       . $this->getConfiguration('password','') . ' '
       . $this->getConfiguration('roomba_ip','');
-    log::add('kroomba', 'debug', 'Start : ' . $cmd);
+    log::add('kroomba', 'debug', 'Start : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
     exec($cmd . ' 2>&1',$result);
     return ;
   }
@@ -221,7 +234,7 @@ class kroomba extends eqLogic {
       . $this->getConfiguration('username','') . ' '
       . $this->getConfiguration('password','') . ' '
       . $this->getConfiguration('roomba_ip','');
-    log::add('kroomba', 'debug', 'Stop : ' . $cmd);
+    log::add('kroomba', 'debug', 'Stop : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
     exec($cmd . ' 2>&1',$result);
     return ;
   }
@@ -232,7 +245,7 @@ class kroomba extends eqLogic {
       . $this->getConfiguration('username','') . ' '
       . $this->getConfiguration('password','') . ' '
       . $this->getConfiguration('roomba_ip','');
-    log::add('kroomba', 'debug', 'Dock : ' . $cmd);
+    log::add('kroomba', 'debug', 'Dock : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
     exec($cmd . ' 2>&1',$result);
     return ;
   }
