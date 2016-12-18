@@ -95,6 +95,7 @@ try {
         }
         $kroomba->setConfiguration("roomba_ip",$roomba['ip']);
         $kroomba->setConfiguration("username",$roomba['blid']);
+        $kroomba->setConfiguration('battery_type', 'undefined');
         $kroomba->save();
       }
       ajax::success();

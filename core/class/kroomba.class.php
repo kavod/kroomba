@@ -73,13 +73,28 @@ class kroomba extends eqLogic {
   // }
 
   public function preSave() {
+    log::add('kroomba', 'debug', 'preSaveBegin:getStatus Battery: ' . $this->getStatus('battery', -2));
+    $this->mission();
+    log::add('kroomba', 'debug', 'preSaveEnd:getStatus Battery: ' . $this->getStatus('battery', -2));
   }
   public function postSave() {
+    log::add('kroomba', 'debug', 'postSaveBegin:getStatus Battery: ' . $this->getStatus('battery', -2));
     // if ($this->getConfiguration('roomba_ip') == '') {
     //   $roomba_ip = $this->discover();
     //   $this->setConfiguration('roomba_ip', $roomba_ip);
     //   //$this->save();
     // }
+    $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'battery');
+    if (!is_object($cmdlogic)) {
+      $cmdlogic = new kroombaCmd();
+      $cmdlogic->setName(__('Battery', __FILE__));
+      $cmdlogic->setEqLogic_id($this->getId());
+      $cmdlogic->setLogicalId('battery');
+    }
+    $cmdlogic->setType('info');
+    $cmdlogic->setSubType('numeric');
+    $cmdlogic->save();
+
     $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'status');
     if (!is_object($cmdlogic)) {
       $cmdlogic = new kroombaCmd();
@@ -154,6 +169,7 @@ class kroomba extends eqLogic {
     // $this->status();
     $this->mission();
     $this->sys();
+    log::add('kroomba', 'debug', 'postSaveEnd:getStatus Battery: ' . $this->getStatus('battery', -2));
   }
 
   public function sys() {
@@ -210,15 +226,28 @@ class kroomba extends eqLogic {
     log::add('kroomba_node', 'debug', 'Résultat : ' . implode($result));
 
     $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'mission');
-    $cmdlogic->setConfiguration('value', implode($result));
-    $cmdlogic->save();
-    $cmdlogic->event(implode($result));
+    if (array_key_exists ('ok',json_decode(implode($result),true))) {
+      $cmdlogic->setConfiguration('value', implode($result));
+      $cmdlogic->save();
+      $cmdlogic->event(implode($result));
 
-    $result = json_decode(implode($result),true)['ok']['phase'];
-    $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'status');
-    $cmdlogic->setConfiguration('value', $result);
-    $cmdlogic->save();
-    $cmdlogic->event($result);
+      $phase = json_decode(implode($result),true)['ok']['phase'];
+      $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'status');
+      $cmdlogic->setConfiguration('value', $phase);
+      $cmdlogic->save();
+      $cmdlogic->event($phase);
+
+      $battery = json_decode(implode($result),true)['ok']['batPct'];
+      $this->batteryStatus($battery);
+      $this->setStatus('battery', $battery);
+      $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'battery');
+      $cmdlogic->setConfiguration('value', $battery);
+      $cmdlogic->save();
+      $cmdlogic->event($battery);
+      log::add('kroomba', 'debug', 'getStatus Battery: ' . $this->getStatus('battery', -2));
+    } else {
+      log::add('kroomba', 'debug', 'Wrong answer: ' . print_r(json_decode(implode($result),true),true));
+    }
     return ;
   }
 
