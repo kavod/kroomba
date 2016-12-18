@@ -1,5 +1,12 @@
 {
+    "plugins\/kroomba\/plugin_info\/configuration.php": {
+        "Discover_roombas" : "Découvrir les roombas"
+    },
     "plugins\/kroomba\/desktop\/php\/kroomba.php": {
+        "Get_password": "Récupérer le mot de passe",
+        "Push_button": "Assurez-vous que votre roomba est sur sa base et alimenté (LED vertes allumées).<br />Puis restez appuyé sur le bouton HOME jusqu'à ce que votre roomba joue une série de sons (environ 2 secondes).<br />Relachez le bouton, votre roomba va faire clignoter son voyant WIFI.<br />Puis appuyez sur \"Continuer\".",
+        "Continue": "Continuer",
+        "Username": "Nom du roomba",
         "Ajouter un équipement": "Ajouter un équipement",
         "Rechercher": "Rechercher",
         "Mes Roombas": "Mes Roombas",

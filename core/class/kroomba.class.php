@@ -73,9 +73,13 @@ class kroomba extends eqLogic {
   // }
 
   public function preSave() {
-    $this->discover();
   }
   public function postSave() {
+    // if ($this->getConfiguration('roomba_ip') == '') {
+    //   $roomba_ip = $this->discover();
+    //   $this->setConfiguration('roomba_ip', $roomba_ip);
+    //   //$this->save();
+    // }
     $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'status');
     if (!is_object($cmdlogic)) {
       $cmdlogic = new kroombaCmd();
@@ -184,15 +188,16 @@ class kroomba extends eqLogic {
   //   return ;
   // }
 
-  public function discover() {
-    $node_path = realpath(dirname(__FILE__) . '/../../node');
-    $cmd = 'cd ' . $node_path . ' && node discover.js';
-    log::add('kroomba', 'debug', 'Découverte des roombas : ' . $cmd);
-    exec($cmd . ' 2>&1',$result);
-    $roomba_ip = preg_match('/IP:(\d+\.\d+\.\d+\.\d+)/',$result[0],$matches);
-    log::add('kroomba','debug','Résultat:' + $roomba_ip);
-    $this->setConfiguration('roomba_ip', $roomba_ip);
-  }
+  // public function discover() {
+  //   $node_path = realpath(dirname(__FILE__) . '/../../node');
+  //   $cmd = 'cd ' . $node_path . ' && node discover.js';
+  //   log::add('kroomba', 'debug', 'Découverte des roombas : ' . $cmd);
+  //   exec($cmd . ' 2>&1',$result);
+  //   log::add('kroomba','debug','Résultat0 :' . $result[0]);
+  //   $roomba_ip = preg_match('/IP:(\d+\.\d+\.\d+\.\d+)/',$result[0],$matches);
+  //   log::add('kroomba','debug','Résultat1 :' . $matches[1]);
+  //   return $matches[1];
+  // }
 
   public function mission() {
     $node_path = realpath(dirname(__FILE__) . '/../../node');
@@ -282,9 +287,6 @@ class kroomba extends eqLogic {
 
     $replace['#kroomba_ip#'] = $this->getConfiguration('roomba_ip','');
             log::add('kroomba', 'debug', '2');
-
-
-
     return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $_version, 'kroomba', 'kroomba')));
   }
 }

@@ -15,12 +15,14 @@ function discovery (cb) {
     try {
       let parsedMsg = JSON.parse(msg);
       if (parsedMsg.hostname && parsedMsg.ip && parsedMsg.hostname.split('-')[0] === 'Roomba') {
-        server.close();
-        //console.log('Robot found! with blid ' + parsedMsg.hostname.split('-')[1]);
-        cb(null, parsedMsg.ip,parsedMsg.hostname.split('-')[1]);
+        console.log('IP:' + parsedMsg.ip + ',blid:' + parsedMsg.hostname.split('-')[1]);
+        //cb(null, parsedMsg.ip,parsedMsg.hostname.split('-')[1]);
+        return;
       }
-    } catch (e) {}
+    } catch (e) {return;}
   });
+
+  server.on("close", () => { process.exit();})
 
   server.on('listening', () => {
     //console.log('Looking for robots...');
@@ -28,9 +30,17 @@ function discovery (cb) {
 
   server.bind(5678, function () {
     const message = new Buffer('irobotmcs');
+    let killMsg = '{"hostname":"1"}';
     server.setBroadcast(true);
     server.send(message, 0, message.length, 5678, '255.255.255.255');
+    setTimeout(function() { server.close(); },5000);
   });
+
+  //setTimeout(function2,3000,server);
+}
+
+function function2(server) {
+  server.close();
 }
 
 function check(rid,blid,requestOptions) {
@@ -51,7 +61,7 @@ function check(rid,blid,requestOptions) {
 	  setTimeout(function () { check(++rid,blid,requestOptions); }, 2000);
 	} else if (response.statusCode === 200) {
 	  let pass = JSON.parse(body).ok.passwd;
-	  console.log('Password: ' + pass);
+	  console.log('Password:' + pass);
 	  //console.log(blid);
 	} else {
 	  console.log('Unespected response. Checking again...');
@@ -61,8 +71,6 @@ function check(rid,blid,requestOptions) {
 }
 
 discovery(function(ierr,ip,blid) {
-	console.log('IP:' + ip);
-	console.log('blid:' + blid);
 	//console.log('Make sure your robot is on the Home Base and powered on (green lights on). Then press and hold the HOME button on your robot until it plays a series of tones (about 2 seconds). Release the button and your robot will flash WIFI light. Then wait and look here...');
 
 	var requestOptions = {
@@ -81,23 +89,3 @@ discovery(function(ierr,ip,blid) {
 	};
 	check(1,blid,requestOptions);
 });
-
-//module.exports = discovery;
-
-
-/*var dorita980 = require('dorita980');
-
-dorita980.getRobotIP(function (ierr, ip) {
-  if (!ierr) {
-	console.log(ip);
-    var myRobotViaLocal = new dorita980.Local('MyUsernameBlid', 'MyPassword', ip);
-
-    myRobotViaLocal.getMission().then((response) => {
-      console.log(response);
-    }).catch((err) => {
-      console.log(err);
-    });
-  } else {
-    console.log('error looking for robot IP');
-  }
-});*/

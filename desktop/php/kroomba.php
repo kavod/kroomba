@@ -97,8 +97,8 @@ $eqLogics = eqLogic::byType('kroomba');
             <div class="form-group">
               <label class="col-sm-3 control-label"></label>
               <div class="col-sm-8">
-                <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isEnable" checked/>{{Activer}}</label>
-                <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isVisible" checked/>{{Visible}}</label>
+                <input type="checkbox" class="eqLogicAttr bootstrapSwitch" data-label-text="{{Activer}}" data-l1key="isEnable" checked/>
+                <input type="checkbox" class="eqLogicAttr bootstrapSwitch" data-label-text="{{Visible}}" data-l1key="isVisible" checked/>
               </div>
             </div>
 
@@ -112,21 +112,24 @@ $eqLogics = eqLogic::byType('kroomba');
           <div id="roomba_ip" class="form-group">
             <label class="col-sm-3 control-label">{{Adresse IP du Roomba}}</label>
             <div class="col-sm-3">
-              <input type="text" class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="roomba_ip" placeholder="exemple 192.168.0.77"/>
+              <input type="text" class="eqLogicAttr configuration form-control" id="roomba_ip_input" data-l1key="configuration" data-l2key="roomba_ip" placeholder="exemple 192.168.0.77"/>
             </div>
           </div>
 
           <div id="username" class="form-group">
             <label class="col-sm-3 control-label">{{Username}}</label>
             <div class="col-sm-3">
-              <input type="text" class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="username"/>
+              <input type="text" class="eqLogicAttr configuration form-control" id="username_input" data-l1key="configuration" data-l2key="username"/>
             </div>
           </div>
 
           <div id="password" class="form-group">
             <label class="col-sm-3 control-label">{{Password}}</label>
             <div class="col-sm-3">
-              <input type="password" class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="password"/>
+              <input type="password" class="eqLogicAttr configuration form-control" id="password_input" data-l1key="configuration" data-l2key="password"/>
+            </div>
+            <div class="col-lg-2">
+              <a class="btn btn-info bt_getPassword" id="bt_getPassword"><i class='fa fa-qrcode'></i> {{Get_password}}</a>
             </div>
           </div>
 
@@ -161,6 +164,50 @@ $eqLogics = eqLogic::byType('kroomba');
   </div>
 </div>
 </div>
+<div id="md_modal" title="{{Get_password}}">
+  <p>
+    <span class="glyphicon glyphicon-warning-sign" style="float:left; margin:12px 12px 20px 0;"></span>
+    {{Push_button}}
+  </p>
+</div>
+<script>
+  $('#md_modal').dialog({
+    autoOpen: false,
+    buttons: {
+      "{{Continue}}": function() {
+        $( this ).dialog( "close" );
+        $.ajax({// fonction permettant de faire de l'ajax
+            type: "POST", // methode de transmission des données au fichier php
+            url: "plugins/kroomba/core/ajax/kroomba.ajax.php", // url du fichier php
+            data: {
+                action: "getPassword",
+                ip:$('#roomba_ip_input').value(),
+                blid:$('#username_input').value(),
+            },
+            dataType: 'json',
+            error: function (request, status, error) {
+                handleAjaxError(request, status, error);
+            },
+            success: function (data) { // si l'appel a bien fonctionné
+                if (data.state != 'ok') {
+                    $('#div_alert').showAlert({message: data.result, level: 'danger'});
+                    return;
+                }
+                $('#password_input').value(data.result);
+                $('#div_alert').showAlert({message: '{{Synchronisation réussie}}', level: 'success'});
+            }
+        });
+      },
+      Cancel: function() {
+        $( this ).dialog( "close" );
+      }
+    }
+  });
+  $('#bt_getPassword').on('click', function () {
+    $('#md_modal').dialog('open');
+    return false;
+  });
+</script>
 
 <?php include_file('desktop', 'kroomba', 'js', 'kroomba'); ?>
 <?php include_file('core', 'plugin.template', 'js'); ?>

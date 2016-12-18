@@ -1,15 +1,22 @@
 {
-    "plugins\/vigilancemeteo\/desktop\/php\/vigilancemeteo.php": {
+    "plugins\/kroomba\/plugin_info\/configuration.php": {
+        "Discover_roombas" : "Découvrir les roombas"
+    },
+    "plugins\/kroomba\/desktop\/php\/kroomba.php": {
+        "Get_password": "Récupérer le mot de passe",
+        "Push_button": "Assurez-vous que votre roomba est sur sa base et alimenté (LED vertes allumées).<br />Puis restez appuyé sur le bouton HOME jusqu'à ce que votre roomba joue une série de sons (environ 2 secondes).<br />Relachez le bouton, votre roomba va faire clignoter son voyant WIFI.<br />Puis appuyez sur \"Continuer\".",
+        "Continue": "Continuer",
+        "Username": "Nom du roomba",
         "Ajouter un équipement": "Ajouter un équipement",
         "Rechercher": "Rechercher",
-        "Mes Vigilances Météo": "Mes Vigilances Météo",
+        "Mes Roombas": "Mes Roombas",
         "Sauvegarder": "Sauvegarder",
         "Supprimer": "Supprimer",
         "Configuration avancée": "Configuration avancée",
         "Equipement": "Equipement",
         "Commandes": "Commandes",
         "Nom": "Nom",
-        "Nom de l'équipement Vigilances Météo": "Nom de l'équipement Vigilances Météo",
+        "Nom du Roomba": "Nom du Roomba",
         "Objet parent": "Objet parent",
         "Aucun": "Aucun",
         "Catégorie": "Catégorie",
@@ -31,17 +38,17 @@
         "Département": "Département",
         "Commande Alerte": "Commande Alerte",
         "Geolocolisation à utiliser": "Geolocolisation à utiliser",
-        "Clef Breezometer": "Clef Breezometer",
+        "Adresse IP du Roomba": "Adresse IP du Roomba",
         "Ville OpenHazards": "Ville OpenHazards",
         "Options": "Options"
     },
-    "plugins\/vigilancemeteo\/desktop\/js\/vigilancemeteo.js": {
+    "plugins\/kroomba\/desktop\/js\/kroomba.js": {
         "Trouver la ville": "Trouver la ville",
         "Nom de la commande": "Nom de la commande",
         "Historiser": "Historiser",
         "Tester": "Tester"
     },
-    "plugins\/vigilancemeteo\/core\/class\/vigilancemeteo.class.php": {
+    "plugins\/kroomba\/core\/class\/kroomba.class.php": {
         "Probabilité de séisme magnitude 5 dans les 3 jours": "Probabilité de séisme magnitude 5 dans les 3 jours",
         "Index Qualité Air": "Index Qualité Air",
         "Couleur Qualité Air": "Couleur Qualité Air",

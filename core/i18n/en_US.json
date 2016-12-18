@@ -1,7 +1,14 @@
 {
-    "plugins\/vigilancemeteo\/desktop\/php\/vigilancemeteo.php": {
-        "Ajouter un équipement": "Ajouter un équipement",
-        "Rechercher": "Rechercher",
+    "plugins\/kroomba\/plugin_info\/configuration.php": {
+        "Discover_roombas" : "Discover Roombas"
+    },
+    "plugins\/kroomba\/desktop\/php\/kroomba.php": {
+        "Get_password": "Retrieve password",
+        "Push_button": "Make sure your robot is on the Home Base and powered on (green lights on).<br />Then press and hold the HOME button on your robot until it plays a series of tones (about 2 seconds).<br />Release the button and your robot will flash WIFI light.<br />Then click \"Continue\".",
+        "Continue": "Continue",
+        "Username": "Roomba name",
+        "Ajouter un équipement": "Add un équipement",
+        "Rechercher": "Search",
         "Mes Vigilances Météo": "Mes Vigilances Météo",
         "Sauvegarder": "Sauvegarder",
         "Supprimer": "Supprimer",
