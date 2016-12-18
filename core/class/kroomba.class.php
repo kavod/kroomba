@@ -35,15 +35,13 @@ class kroomba extends eqLogic {
   //   log::add('kroomba', 'debug', '15mn cron');
   // }
 
-  // public static function cron5() {
-  //   foreach (eqLogic::byType('kroomba', true) as $kroomba) {
-  //     if ($kroomba->getConfiguration('type') == 'pluie1h') {
-  //       $kroomba->getPluie();
-  //       $kroomba->refreshWidget();
-  //     }
-  //   }
-  //   log::add('kroomba', 'debug', '5mn cron');
-  // }
+  public static function cron5() {
+    foreach (eqLogic::byType('kroomba', true) as $kroomba) {
+      $kroomba->mission();
+      $kroomba->refreshWidget();
+    }
+    log::add('kroomba', 'debug', '5mn cron');
+  }
 
   // public static function cronHourly() {
   //   foreach (eqLogic::byType('kroomba', true) as $kroomba) {
@@ -123,6 +121,30 @@ class kroomba extends eqLogic {
       $cmdlogic = new kroombaCmd();
       $cmdlogic->setName(__('Start', __FILE__));
       $cmdlogic->setLogicalId('start');
+      $cmdlogic->setIsVisible(1);
+    }
+    $cmdlogic->setType('action');
+    $cmdlogic->setEqLogic_id($this->getId());
+    $cmdlogic->setSubType('other');
+    $cmdlogic->save();
+
+    $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'pause');
+    if (!is_object($cmdlogic)) {
+      $cmdlogic = new kroombaCmd();
+      $cmdlogic->setName(__('Pause', __FILE__));
+      $cmdlogic->setLogicalId('pause');
+      $cmdlogic->setIsVisible(1);
+    }
+    $cmdlogic->setType('action');
+    $cmdlogic->setEqLogic_id($this->getId());
+    $cmdlogic->setSubType('other');
+    $cmdlogic->save();
+
+    $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'resume');
+    if (!is_object($cmdlogic)) {
+      $cmdlogic = new kroombaCmd();
+      $cmdlogic->setName(__('Resume', __FILE__));
+      $cmdlogic->setLogicalId('resume');
       $cmdlogic->setIsVisible(1);
     }
     $cmdlogic->setType('action');
@@ -262,6 +284,28 @@ class kroomba extends eqLogic {
     return ;
   }
 
+  public function pause() {
+    $node_path = realpath(dirname(__FILE__) . '/../../node');
+    $cmd = 'cd ' . $node_path . ' && node pause.js '
+      . $this->getConfiguration('username','') . ' '
+      . $this->getConfiguration('password','') . ' '
+      . $this->getConfiguration('roomba_ip','');
+    log::add('kroomba', 'debug', 'Pause : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
+    exec($cmd . ' 2>&1',$result);
+    return ;
+  }
+
+  public function resume() {
+    $node_path = realpath(dirname(__FILE__) . '/../../node');
+    $cmd = 'cd ' . $node_path . ' && node resume.js '
+      . $this->getConfiguration('username','') . ' '
+      . $this->getConfiguration('password','') . ' '
+      . $this->getConfiguration('roomba_ip','');
+    log::add('kroomba', 'debug', 'Resume : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
+    exec($cmd . ' 2>&1',$result);
+    return ;
+  }
+
   public function stop() {
     $node_path = realpath(dirname(__FILE__) . '/../../node');
     $cmd = 'cd ' . $node_path . ' && node stop.js '
@@ -333,14 +377,23 @@ class kroombaCmd extends cmd {
 		$eqLogic = $this->getEqLogic();
 		if ($this->getLogicalId() == 'start') {
 			$eqLogic->start();
+  		$eqLogic->mission();
 		}
-		$eqLogic = $this->getEqLogic();
+		if ($this->getLogicalId() == 'pause') {
+			$eqLogic->pause();
+  		$eqLogic->mission();
+		}
+		if ($this->getLogicalId() == 'resume') {
+			$eqLogic->resume();
+  		$eqLogic->mission();
+		}
 		if ($this->getLogicalId() == 'stop') {
 			$eqLogic->stop();
+  		$eqLogic->mission();
 		}
-		$eqLogic = $this->getEqLogic();
 		if ($this->getLogicalId() == 'dock') {
 			$eqLogic->dock();
+  		$eqLogic->mission();
 		}
 		if ($this->getLogicalId() == 'sys') {
 			$eqLogic->sys();
