@@ -357,9 +357,13 @@ class kroomba extends eqLogic {
     if ($this->getDisplay('hideOn' . $version) == 1) {
       return '';
     }
+    $img_path = "plugins/kroomba/doc/images/kroomba_";
 
+    $statusCmd = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'status');
+    $status = $statusCmd->getConfiguration("value","unknown");
     $replace['#kroomba_ip#'] = $this->getConfiguration('roomba_ip','');
-            log::add('kroomba', 'debug', '2');
+    $replace['#img_phase#'] = $img_path . $status . '.png';
+    $replace['#phase#'] = $status;
     return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $_version, 'kroomba', 'kroomba')));
   }
 }
