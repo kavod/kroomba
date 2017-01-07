@@ -21,53 +21,12 @@ class kroomba extends eqLogic {
 
   public static $_widgetPossibility = array('custom' => true);
 
-  // public static function cron15() {
-  //   foreach (eqLogic::byType('kroomba', true) as $kroomba) {
-  //     if ($kroomba->getConfiguration('type') == 'vigilance') {
-  //       $kroomba->getVigilance();
-  //       $kroomba->refreshWidget();
-  //     }
-  //     if ($kroomba->getConfiguration('type') == 'crue') {
-  //       $kroomba->getCrue();
-  //       $kroomba->refreshWidget();
-  //     }
-  //   }
-  //   log::add('kroomba', 'debug', '15mn cron');
-  // }
-
   public static function cron5() {
     foreach (eqLogic::byType('kroomba', true) as $kroomba) {
       $kroomba->mission();
       $kroomba->refreshWidget();
     }
   }
-
-  // public static function cronHourly() {
-  //   foreach (eqLogic::byType('kroomba', true) as $kroomba) {
-  //     if ($kroomba->getConfiguration('type') == 'maree') {
-  //       $kroomba->getMaree();
-  //       $kroomba->refreshWidget();
-  //     }
-  //     if ($kroomba->getConfiguration('type') == 'air') {
-  //       $kroomba->getAir();
-  //       $kroomba->refreshWidget();
-  //     }
-  //     if ($kroomba->getConfiguration('type') == 'seisme') {
-  //       $kroomba->getSeisme();
-  //       $kroomba->refreshWidget();
-  //     }
-  //   }
-  //   log::add('kroomba', 'debug', 'Hourly cron');
-  // }
-
-  // public static function cronDaily() {
-  //   foreach (eqLogic::byType('kroomba', true) as $kroomba) {
-  //     foreach ($kroomba->getCmd() as $cmd) {
-  //       $cmd->setConfiguration('alert', '0');
-  //       $cmd->save();
-  //     }
-  //   }
-  // }
 
   public function preSave() {
     log::add('kroomba', 'debug', 'preSaveBegin:getStatus Battery: ' . $this->getStatus('battery', -2));
@@ -76,11 +35,6 @@ class kroomba extends eqLogic {
   }
   public function postSave() {
     log::add('kroomba', 'debug', 'postSaveBegin:getStatus Battery: ' . $this->getStatus('battery', -2));
-    // if ($this->getConfiguration('roomba_ip') == '') {
-    //   $roomba_ip = $this->discover();
-    //   $this->setConfiguration('roomba_ip', $roomba_ip);
-    //   //$this->save();
-    // }
     $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'battery');
     if (!is_object($cmdlogic)) {
       $cmdlogic = new kroombaCmd();
@@ -187,7 +141,6 @@ class kroomba extends eqLogic {
     $cmdlogic->setSubType('string');
     $cmdlogic->save();
 
-    // $this->status();
     $this->mission();
     $this->sys();
     log::add('kroomba', 'debug', 'postSaveEnd:getStatus Battery: ' . $this->getStatus('battery', -2));
@@ -209,32 +162,6 @@ class kroomba extends eqLogic {
     $cmdlogic->event(implode($result));
     return ;
   }
-
-  // public function status() {
-  //   $node_path = realpath(dirname(__FILE__) . '/../../node');
-  //   $cmd = 'cd ' . $node_path . ' && node mission.js';
-  //   log::add('kroomba', 'debug', 'Lancement mission : ' . $cmd);
-  //   exec($cmd . ' 2>&1',$result);
-  //   log::add('kroomba_node', 'debug', 'Résultat : ' . implode($result));
-  //   $result = json_decode(implode($result),true)['ok']['phase'];
-  //
-  //   $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'status');
-  //   $cmdlogic->setConfiguration('value', $result);
-  //   $cmdlogic->save();
-  //   $cmdlogic->event($result);
-  //   return ;
-  // }
-
-  // public function discover() {
-  //   $node_path = realpath(dirname(__FILE__) . '/../../node');
-  //   $cmd = 'cd ' . $node_path . ' && node discover.js';
-  //   log::add('kroomba', 'debug', 'Découverte des roombas : ' . $cmd);
-  //   exec($cmd . ' 2>&1',$result);
-  //   log::add('kroomba','debug','Résultat0 :' . $result[0]);
-  //   $roomba_ip = preg_match('/IP:(\d+\.\d+\.\d+\.\d+)/',$result[0],$matches);
-  //   log::add('kroomba','debug','Résultat1 :' . $matches[1]);
-  //   return $matches[1];
-  // }
 
   public function mission() {
     $node_path = realpath(dirname(__FILE__) . '/../../node');
