@@ -49,6 +49,18 @@
         "Tester": "Tester"
     },
     "plugins\/kroomba\/core\/class\/kroomba.class.php": {
+        "Refresh": "Raffraichir",
+        "Start cleaning": "Lancer un nouveau nettoyage",
+        "Stop cleaning": "Mettre fin au nettoyage",
+        "Back to dock": "Retour à la station d'accueil",
+        "Resume cleaning": "Reprendre le nettoyage",
+        "Pause cleaning": "Suspendre le nettoyage",
+        "Charging": "En charge",
+        "Returning to dock": "En chemin vers la base d'accueil",
+        "Cleaning": "En cours de nettoyage",
+        "Stopped": "A l'arrêt",
+        "Stucked !?!": "Bloqué !?!",
+        "Unknown: ": "Inconnu : ",
         "Probabilité de séisme magnitude 5 dans les 3 jours": "Probabilité de séisme magnitude 5 dans les 3 jours",
         "Index Qualité Air": "Index Qualité Air",
         "Couleur Qualité Air": "Couleur Qualité Air",

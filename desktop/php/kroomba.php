@@ -164,14 +164,14 @@ $eqLogics = eqLogic::byType('kroomba');
   </div>
 </div>
 </div>
-<div id="md_modal" title="{{Get_password}}">
+<div id="md_modal_kroomba" title="{{Get_password}}">
   <p>
     <span class="glyphicon glyphicon-warning-sign" style="float:left; margin:12px 12px 20px 0;"></span>
     {{Push_button}}
   </p>
 </div>
 <script>
-  $('#md_modal').dialog({
+  $('#md_modal_kroomba').dialog({
     autoOpen: false,
     buttons: {
       "{{Continue}}": function() {
@@ -204,7 +204,7 @@ $eqLogics = eqLogic::byType('kroomba');
     }
   });
   $('#bt_getPassword').on('click', function () {
-    $('#md_modal').dialog('open');
+    $('#md_modal_kroomba').dialog('open');
     return false;
   });
 </script>

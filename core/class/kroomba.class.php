@@ -40,7 +40,6 @@ class kroomba extends eqLogic {
       $kroomba->mission();
       $kroomba->refreshWidget();
     }
-    log::add('kroomba', 'debug', '5mn cron');
   }
 
   // public static function cronHourly() {
@@ -270,6 +269,9 @@ class kroomba extends eqLogic {
     } else {
       log::add('kroomba', 'debug', 'Wrong answer: ' . print_r(json_decode(implode($result),true),true));
     }
+    $this->toHtml('mobile');
+    $this->toHtml('dashboard');
+    $this->refreshWidget();
     return ;
   }
 
@@ -349,6 +351,13 @@ class kroomba extends eqLogic {
   }
 
   public function toHtml($_version = 'dashboard') {
+    $parameters = $this->getDisplay('parameters');
+    if (is_array($parameters)) {
+        foreach ($parameters as $key => $value) {
+            $replace['#' . $key . '#'] = $value;
+        }
+    }
+
     $replace = $this->preToHtml($_version);
     if (!is_array($replace)) {
       return $replace;
@@ -362,9 +371,70 @@ class kroomba extends eqLogic {
     $statusCmd = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'status');
     $status = $statusCmd->getConfiguration("value","unknown");
     $replace['#kroomba_ip#'] = $this->getConfiguration('roomba_ip','');
-    $replace['#img_phase#'] = $img_path . $status . '.png';
     $replace['#phase#'] = $status;
-    return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $_version, 'kroomba', 'kroomba')));
+    switch($status)
+    {
+      case 'charge':
+        $replace['#str_phase#'] = __('Charging', __FILE__);
+        break;
+
+      case 'home':
+        $replace['#str_phase#'] = __('Returning to dock', __FILE__);
+        break;
+
+      case 'run':
+        $replace['#str_phase#'] = __('Cleaning', __FILE__);
+        break;
+
+      case 'stop':
+        $replace['#str_phase#'] = __('Stopped', __FILE__);
+        break;
+
+      case 'stuck':
+        $replace['#str_phase#'] = __('Stucked !?!', __FILE__);
+        break;
+
+      case 'unknown':
+      default:
+        $replace['#str_phase#'] = __('Unknown: ', __FILE__).$status;
+        $status = 'unknown';
+        break;
+    }
+    $replace['#img_phase#'] = $img_path . $status . '.png';
+
+    $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'mission');
+    $replace['#refresh_id#'] = $cmdlogic->getId();
+    $replace['#str_refresh#'] = __('Refresh', __FILE__);
+
+    $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'start');
+    $replace['#start_id#'] = $cmdlogic->getId();
+    $replace['#str_start#'] = __('Start cleaning', __FILE__);
+
+    $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'stop');
+    $replace['#stop_id#'] = $cmdlogic->getId();
+    $replace['#str_stop#'] = __('Stop cleaning', __FILE__);
+
+    $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'dock');
+    $replace['#dock_id#'] = $cmdlogic->getId();
+    $replace['#str_dock#'] = __('Back to dock', __FILE__);
+
+    $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'resume');
+    $replace['#resume_id#'] = $cmdlogic->getId();
+    $replace['#str_resume#'] = __('Resume cleaning', __FILE__);
+
+    $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'pause');
+    $replace['#pause_id#'] = $cmdlogic->getId();
+    $replace['#str_pause#'] = __('Pause cleaning', __FILE__);
+
+    $vcolor = ($_version == 'mobile') ? 'mcmdColor' : 'cmdColor';
+		if ($this->getPrimaryCategory() == '') {
+			$replace['#cmdColor#'] = jeedom::getConfiguration('eqLogic:category:default:' . $vcolor);
+		} else {
+			$replace['#cmdColor#'] = jeedom::getConfiguration('eqLogic:category:' . $this->getPrimaryCategory() . ':' . $vcolor);
+		}
+
+    $html = $this->postToHtml($_version, template_replace($replace, getTemplate('core', $_version, 'kroomba', 'kroomba')));
+    return $html;
   }
 }
 

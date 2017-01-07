@@ -49,6 +49,18 @@
         "Tester": "Tester"
     },
     "plugins\/vigilancemeteo\/core\/class\/vigilancemeteo.class.php": {
+        "Refresh": "Refresh",
+        "Start cleaning": "Start new cleaning",
+        "Stop cleaning": "Stop cleaning",
+        "Back to dock": "Back to the dock station",
+        "Resume cleaning": "Resume cleaning",
+        "Pause cleaning": "Pause cleaning",
+        "Charging": "Charging",
+        "Returning to dock": "Returning to dock",
+        "Cleaning": "Cleaning",
+        "Stopped": "Stopped",
+        "Stucked !?!": "Stucked !?!",
+        "Unknown: ": "Unknown: ",
         "Probabilité de séisme magnitude 5 dans les 3 jours": "Probabilité de séisme magnitude 5 dans les 3 jours",
         "Index Qualité Air": "Index Qualité Air",
         "Couleur Qualité Air": "Couleur Qualité Air",
