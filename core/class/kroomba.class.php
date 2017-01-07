@@ -41,6 +41,7 @@ class kroomba extends eqLogic {
       $cmdlogic->setName(__('Battery', __FILE__));
       $cmdlogic->setEqLogic_id($this->getId());
       $cmdlogic->setLogicalId('battery');
+		  $cmdlogic->setDisplay('generic_type', 'BATTERY');
     }
     $cmdlogic->setType('info');
     $cmdlogic->setSubType('numeric');
@@ -52,6 +53,7 @@ class kroomba extends eqLogic {
       $cmdlogic->setName(__('Status', __FILE__));
       $cmdlogic->setEqLogic_id($this->getId());
       $cmdlogic->setLogicalId('status');
+		  $cmdlogic->setDisplay('generic_type', 'MODE_STATE');
     }
     $cmdlogic->setType('info');
     $cmdlogic->setSubType('string');
@@ -63,6 +65,7 @@ class kroomba extends eqLogic {
       $cmdlogic->setName(__('Mission', __FILE__));
       $cmdlogic->setLogicalId('mission');
       $cmdlogic->setIsVisible(1);
+		  $cmdlogic->setDisplay('generic_type', 'GENERIC_ACTION');
     }
     $cmdlogic->setType('action');
     $cmdlogic->setEqLogic_id($this->getId());
@@ -75,6 +78,7 @@ class kroomba extends eqLogic {
       $cmdlogic->setName(__('Start', __FILE__));
       $cmdlogic->setLogicalId('start');
       $cmdlogic->setIsVisible(1);
+		  $cmdlogic->setDisplay('generic_type', 'GENERIC_ACTION');
     }
     $cmdlogic->setType('action');
     $cmdlogic->setEqLogic_id($this->getId());
@@ -87,6 +91,7 @@ class kroomba extends eqLogic {
       $cmdlogic->setName(__('Pause', __FILE__));
       $cmdlogic->setLogicalId('pause');
       $cmdlogic->setIsVisible(1);
+		  $cmdlogic->setDisplay('generic_type', 'GENERIC_ACTION');
     }
     $cmdlogic->setType('action');
     $cmdlogic->setEqLogic_id($this->getId());
@@ -99,6 +104,7 @@ class kroomba extends eqLogic {
       $cmdlogic->setName(__('Resume', __FILE__));
       $cmdlogic->setLogicalId('resume');
       $cmdlogic->setIsVisible(1);
+		  $cmdlogic->setDisplay('generic_type', 'GENERIC_ACTION');
     }
     $cmdlogic->setType('action');
     $cmdlogic->setEqLogic_id($this->getId());
@@ -111,6 +117,7 @@ class kroomba extends eqLogic {
       $cmdlogic->setName(__('Stop', __FILE__));
       $cmdlogic->setLogicalId('stop');
       $cmdlogic->setIsVisible(1);
+		  $cmdlogic->setDisplay('generic_type', 'GENERIC_ACTION');
     }
     $cmdlogic->setType('action');
     $cmdlogic->setEqLogic_id($this->getId());
@@ -123,6 +130,7 @@ class kroomba extends eqLogic {
       $cmdlogic->setName(__('Dock', __FILE__));
       $cmdlogic->setLogicalId('dock');
       $cmdlogic->setIsVisible(1);
+		  $cmdlogic->setDisplay('generic_type', 'GENERIC_ACTION');
     }
     $cmdlogic->setType('action');
     $cmdlogic->setEqLogic_id($this->getId());

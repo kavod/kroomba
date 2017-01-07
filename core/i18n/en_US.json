@@ -28,7 +28,10 @@
         "Commentaire": "Comment",
         "Options": "Options",
         "Adresse IP du Roomba": "Roomba IP address",
-        "Synchronisation réussie": "Synchronization success"
+        "Synchronisation réussie": "Synchronization success",
+        "Gestion": "Management",
+        "Configuration": "Configuration",
+        "Add": "Add"
     },
     "plugins\/vigilancemeteo\/desktop\/js\/vigilancemeteo.js": {
         "Nom de la commande": "Command name",

@@ -28,7 +28,10 @@
         "Commentaire": "Commentaire",
         "Options": "Options",
         "Adresse IP du Roomba": "Adresse IP du Roomba",
-        "Synchronisation réussie": "Synchronisation réussie"
+        "Synchronisation réussie": "Synchronisation réussie",
+        "Gestion": "Gestion",
+        "Configuration": "Configuration",
+        "Add": "Ajouter"
     },
     "plugins\/kroomba\/desktop\/js\/kroomba.js": {
         "Nom de la commande": "Nom de la commande",

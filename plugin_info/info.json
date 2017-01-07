@@ -4,6 +4,6 @@
 	"licence" : "AGPL",
 	"author" : "kavod",
 	"require" : "2.4",
-	"category" : "wellness",
+	"category" : "devicecommunication",
   "hasDependency" : 1
 }

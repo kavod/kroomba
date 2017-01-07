@@ -50,7 +50,8 @@ if (!isConnect()) {
                     $('#div_alert').showAlert({message: data.result, level: 'danger'});
                     return;
                 }
-                $('#div_alert').showAlert({message: '{{Synchronisation réussie}}: ' + data.result, level: 'success'});
+                loadPage('index.php?v=d&m=kroomba&p=kroomba&saveSuccessFull=1');
+                //$('#div_alert').showAlert({message: '{{Synchronisation réussie}}: ' + data.result, level: 'success'});
             }
         });
     });
