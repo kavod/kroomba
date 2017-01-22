@@ -44,6 +44,9 @@ function getPassword($ip,$blid) {
   exec($cmd . ' 2>&1',$password);
   log::add('kroomba', 'debug', 'Résultat: '.$password[0]. '('.count($password).')');
   if (count($password) > 1 || $password[0] == 'Error') {
+    foreach($password as $line) {
+      log::add('kroomba', 'debug', 'Error: '.$line);
+    }
     log::add('kroomba', 'debug', 'Not found');
     return false;
   } else {

@@ -9,7 +9,7 @@ var blid = process.argv[3];
 function check(rid,blid,requestOptions) {
   if (rid === 30) {
 	console.log("Error");
-  //console.log('Timeout getting password. Are you following the instructions? You already setup your robot? Its the robot IP correct?');
+  console.log('Timeout getting password. Are you following the instructions? You already setup your robot? Its the robot IP correct?');
 	process.exit(1);
   }
 
@@ -17,8 +17,8 @@ function check(rid,blid,requestOptions) {
 
   request(requestOptions, function (error, response, body) {
 	if (error) {
-	  //console.log('Fatal error connecting to robot. Please verify the IP address and connectivity:', error);
     console.log('Error');
+    console.log('Fatal error connecting to robot. Please verify the IP address and connectivity:', error);
 	  process.exit(1);
 	}
 
