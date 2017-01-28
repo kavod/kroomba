@@ -40,20 +40,24 @@ function getPassword($ip,$blid) {
   log::add('kroomba', 'debug', 'getPassword');
   $node_path = realpath(dirname(__FILE__) . '/../../node');
   $cmd = 'cd ' . $node_path . ' && node getPassword.js ' . $ip . ' ' . $blid;
-  log::add('kroomba', 'debug', 'Getting password for ' . $ip . ' : ' . $cmd);
-  exec($cmd . ' 2>&1',$password);
-  log::add('kroomba', 'debug', 'Résultat: '.$password[0]. '('.count($password).')');
-  if (count($password) > 1 || $password[0] == 'Error') {
-    foreach($password as $line) {
-      log::add('kroomba', 'debug', 'Error: '.$line);
+  log::add('kroomba', 'debug', 'getPassword:Getting password for ' . $ip . ' : ' . $cmd);
+  exec($cmd . ' 2>&1',$result);
+  $password="";
+  foreach($result as $line)
+  {
+    log::add('kroomba', 'debug', 'getPassword:Result: '.$line);
+    if (preg_match('/Password:(\w+)/',$line,$matches)==1)
+    {
+      $password = $matches[1];
+      log::add('kroomba', 'debug', 'getPassword:Found: '.$password);
     }
-    log::add('kroomba', 'debug', 'Not found');
-    return false;
-  } else {
-    preg_match('/Password:(\w+)/',$password[0],$matches);
-    log::add('kroomba', 'debug', 'Found: '.$matches[1]);
-    return $matches[1];
   }
+  if ($password == "")
+  {
+    log::add('kroomba', 'error', 'getPassword:Password not found');
+    return false;
+  }
+  return $password;
 }
 
 try {

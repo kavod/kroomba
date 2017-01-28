@@ -8,8 +8,10 @@ var blid = process.argv[3];
 
 function check(rid,blid,requestOptions) {
   if (rid === 30) {
+  var d = new Date();
+  var n = d.toTimeString();
 	console.log("Error");
-  console.log('Timeout getting password. Are you following the instructions? You already setup your robot? Its the robot IP correct?');
+  console.log(n+':Timeout getting password. Are you following the instructions? You already setup your robot? Its the robot IP correct?');
 	process.exit(1);
   }
 
@@ -23,6 +25,9 @@ function check(rid,blid,requestOptions) {
 	}
 
 	if (response.statusCode === 401) {
+    var d = new Date();
+    var n = d.toTimeString();
+	  console.log(d+':401 response from server. Trying again. ('+rid+'/30)');
 	  setTimeout(function () { check(++rid,blid,requestOptions); }, 2000);
 	} else if (response.statusCode === 200) {
 	  let pass = JSON.parse(body).ok.passwd;
@@ -40,13 +45,13 @@ var requestOptions = {
   'uri': 'https://' + ip + ':443/umi',
   'strictSSL': false,
   'headers': {
-	'Content-Type': 'application/json',
-	'Connection': 'close',
-	'User-Agent': 'aspen%20production/2618 CFNetwork/758.3.15 Darwin/15.4.0',
-	'Content-Encoding': 'identity',
-	'Accept': '*/*',
-	'Accept-Language': 'en-us',
-	'Host': ip
+  	'Content-Type': 'application/json',
+  	'Connection': 'close',
+  	'User-Agent': 'aspen%20production/2618 CFNetwork/758.3.15 Darwin/15.4.0',
+  	'Content-Encoding': 'identity',
+  	'Accept': '*/*',
+  	'Accept-Language': 'en-us',
+  	'Host': ip
   }
 };
 check(1,blid,requestOptions);

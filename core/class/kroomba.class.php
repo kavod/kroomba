@@ -314,6 +314,7 @@ class kroomba extends eqLogic {
         break;
 
       case 'home':
+      case 'hmUsrDock':
         $replace['#str_phase#'] = __('Returning to dock', __FILE__);
         break;
 
