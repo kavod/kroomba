@@ -15,7 +15,7 @@ echo 10 > /tmp/kroomba_dep
 actual=`nodejs -v`;
 echo "Version actuelle : ${actual}"
 
-if [[ $actual == *"4."* || $actual == *"5."* ]]
+if [[ $actual == *"4.7.3"* || $actual == *"4.8."* || $actual == *"5."* ]]
 then
   echo "Ok, version suffisante";
 else

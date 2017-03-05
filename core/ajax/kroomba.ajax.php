@@ -46,7 +46,7 @@ function getPassword($ip,$blid) {
   foreach($result as $line)
   {
     log::add('kroomba', 'debug', 'getPassword:Result: '.$line);
-    if (preg_match('/Password:(\w+)/',$line,$matches)==1)
+    if (preg_match('/Password (.+)/',$line,$matches)==1)
     {
       $password = $matches[1];
       log::add('kroomba', 'debug', 'getPassword:Found: '.$password);

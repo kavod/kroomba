@@ -156,10 +156,10 @@ class kroomba extends eqLogic {
 
   public function sys() {
     $node_path = realpath(dirname(__FILE__) . '/../../node');
-    $cmd = 'cd ' . $node_path . ' && node sys.js '
-      . $this->getConfiguration('username','') . ' '
-      . $this->getConfiguration('password','') . ' '
-      . $this->getConfiguration('roomba_ip','');
+    $cmd = 'cd ' . $node_path . ' && node sys.js "'
+      . $this->getConfiguration('username','') . '" "'
+      . $this->getConfiguration('password','') . '" "'
+      . $this->getConfiguration('roomba_ip','') .'"';
     log::add('kroomba', 'debug', 'Lancement sys : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
     exec($cmd . ' 2>&1',$result);
     log::add('kroomba_node', 'debug', 'Résultat : ' . implode($result));
@@ -173,27 +173,27 @@ class kroomba extends eqLogic {
 
   public function mission() {
     $node_path = realpath(dirname(__FILE__) . '/../../node');
-    $cmd = 'cd ' . $node_path . ' && node mission.js '
-      . $this->getConfiguration('username','') . ' '
-      . $this->getConfiguration('password','') . ' '
-      . $this->getConfiguration('roomba_ip','');
+    $cmd = 'cd ' . $node_path . ' && node mission.js "'
+      . $this->getConfiguration('username','') . '" "'
+      . $this->getConfiguration('password','') . '" "'
+      . $this->getConfiguration('roomba_ip','') .'"';
     log::add('kroomba', 'debug', 'Lancement mission : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
     exec($cmd . ' 2>&1',$result);
-    log::add('kroomba_node', 'debug', 'Résultat : ' . implode($result));
+    log::add('kroomba', 'debug', 'Résultat : ' . implode($result));
 
     $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'mission');
-    if (array_key_exists ('ok',json_decode(implode($result),true))) {
+    if (array_key_exists ('cleanMissionStatus',json_decode(implode($result),true))) {
       $cmdlogic->setConfiguration('value', implode($result));
       $cmdlogic->save();
       $cmdlogic->event(implode($result));
 
-      $phase = json_decode(implode($result),true)['ok']['phase'];
+      $phase = json_decode(implode($result),true)['cleanMissionStatus']['phase'];
       $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'status');
       $cmdlogic->setConfiguration('value', $phase);
       $cmdlogic->save();
       $cmdlogic->event($phase);
 
-      $battery = json_decode(implode($result),true)['ok']['batPct'];
+      $battery = json_decode(implode($result),true)['batPct'];
       $this->batteryStatus($battery);
       $this->setStatus('battery', $battery);
       $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'battery');
@@ -212,10 +212,10 @@ class kroomba extends eqLogic {
 
   public function start() {
     $node_path = realpath(dirname(__FILE__) . '/../../node');
-    $cmd = 'cd ' . $node_path . ' && node start.js '
-      . $this->getConfiguration('username','') . ' '
-      . $this->getConfiguration('password','') . ' '
-      . $this->getConfiguration('roomba_ip','');
+    $cmd = 'cd ' . $node_path . ' && node start.js "'
+      . $this->getConfiguration('username','') . '" "'
+      . $this->getConfiguration('password','') . '" "'
+      . $this->getConfiguration('roomba_ip','') .'"';
     log::add('kroomba', 'debug', 'Start : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
     exec($cmd . ' 2>&1',$result);
     return ;
@@ -223,10 +223,10 @@ class kroomba extends eqLogic {
 
   public function pause() {
     $node_path = realpath(dirname(__FILE__) . '/../../node');
-    $cmd = 'cd ' . $node_path . ' && node pause.js '
-      . $this->getConfiguration('username','') . ' '
-      . $this->getConfiguration('password','') . ' '
-      . $this->getConfiguration('roomba_ip','');
+    $cmd = 'cd ' . $node_path . ' && node pause.js "'
+      . $this->getConfiguration('username','') . '" "'
+      . $this->getConfiguration('password','') . '" "'
+      . $this->getConfiguration('roomba_ip','') .'"';
     log::add('kroomba', 'debug', 'Pause : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
     exec($cmd . ' 2>&1',$result);
     return ;
@@ -234,10 +234,10 @@ class kroomba extends eqLogic {
 
   public function resume() {
     $node_path = realpath(dirname(__FILE__) . '/../../node');
-    $cmd = 'cd ' . $node_path . ' && node resume.js '
-      . $this->getConfiguration('username','') . ' '
-      . $this->getConfiguration('password','') . ' '
-      . $this->getConfiguration('roomba_ip','');
+    $cmd = 'cd ' . $node_path . ' && node resume.js "'
+      . $this->getConfiguration('username','') . '" "'
+      . $this->getConfiguration('password','') . '" "'
+      . $this->getConfiguration('roomba_ip','') .'"';
     log::add('kroomba', 'debug', 'Resume : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
     exec($cmd . ' 2>&1',$result);
     return ;
@@ -245,10 +245,10 @@ class kroomba extends eqLogic {
 
   public function stop() {
     $node_path = realpath(dirname(__FILE__) . '/../../node');
-    $cmd = 'cd ' . $node_path . ' && node stop.js '
-      . $this->getConfiguration('username','') . ' '
-      . $this->getConfiguration('password','') . ' '
-      . $this->getConfiguration('roomba_ip','');
+    $cmd = 'cd ' . $node_path . ' && node stop.js "'
+      . $this->getConfiguration('username','') . '" "'
+      . $this->getConfiguration('password','') . '" "'
+      . $this->getConfiguration('roomba_ip','') .'"';
     log::add('kroomba', 'debug', 'Stop : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
     exec($cmd . ' 2>&1',$result);
     return ;
@@ -256,10 +256,10 @@ class kroomba extends eqLogic {
 
   public function dock() {
     $node_path = realpath(dirname(__FILE__) . '/../../node');
-    $cmd = 'cd ' . $node_path . ' && node dock.js '
-      . $this->getConfiguration('username','') . ' '
-      . $this->getConfiguration('password','') . ' '
-      . $this->getConfiguration('roomba_ip','');
+    $cmd = 'cd ' . $node_path . ' && node dock.js "'
+      . $this->getConfiguration('username','') . '" "'
+      . $this->getConfiguration('password','') . '" "'
+      . $this->getConfiguration('roomba_ip','') .'"';
     log::add('kroomba', 'debug', 'Dock : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
     exec($cmd . ' 2>&1',$result);
     return ;

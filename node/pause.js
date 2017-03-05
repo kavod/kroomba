@@ -8,6 +8,7 @@ var myRobotViaLocal = new dorita980.Local(blid, password, ip); // robot IP addre
 // Pause!
 myRobotViaLocal.pause().then(function(data){
   console.log(data);
+  myRobotViaLocal.end();
 }).catch(function(err){
   console.error(err);
 });
