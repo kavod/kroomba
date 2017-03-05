@@ -6,7 +6,7 @@
     "plugins\/kroomba\/desktop\/php\/kroomba.php": {
         "401 - Accès non autorisé": "401 - Unauthorized access",
         "Get_password": "Retrieve password",
-        "Push_button": "Make sure your robot is on the Home Base and powered on (green lights on).<br />Then press and hold the HOME button on your robot until it plays a series of tones (about 2 seconds).<br />Release the button and your robot will flash WIFI light.<br />Then click \"Continue\".",
+        "Push_button": "First: close all iRobot mobile app which can be connected to Roomba.<br />Make sure your robot is on the Home Base and powered on (green lights on).<br />Then press and hold the HOME button on your robot until it plays a series of tones (about 2 seconds).<br />Release the button and your robot will flash WIFI light.<br />Then click \"Continue\".",
         "Continue": "Continue",
         "Username": "Roomba name",
         "Password": "Password",
