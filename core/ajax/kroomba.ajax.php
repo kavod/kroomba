@@ -25,7 +25,7 @@ function myDiscover() {
   exec($cmd . ' 2>&1',$roombas);
   foreach ($roombas as $roomba) {
     log::add('kroomba','debug','Résultat :' . $roomba);
-    preg_match('/IP:(\d+\.\d+\.\d+\.\d+),blid:(\d+)/',$roomba,$matches);
+    preg_match('/IP:(\d+\.\d+\.\d+\.\d+),blid:(\w+)/',$roomba,$matches);
     log::add('kroomba','debug','ip :' . $matches[1]);
     log::add('kroomba','debug','blid :' . $matches[2]);
     $result[] = array(
