@@ -59,6 +59,18 @@ class kroomba extends eqLogic {
     $cmdlogic->setSubType('string');
     $cmdlogic->save();
 
+    $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'binFull');
+    if (!is_object($cmdlogic)) {
+      $cmdlogic = new kroombaCmd();
+      $cmdlogic->setName(__('binFull', __FILE__));
+      $cmdlogic->setEqLogic_id($this->getId());
+      $cmdlogic->setLogicalId('binFull');
+		  $cmdlogic->setDisplay('generic_type', 'GENERIC_INFO');
+    }
+    $cmdlogic->setType('info');
+    $cmdlogic->setSubType('binary');
+    $cmdlogic->save();
+
     $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'mission');
     if (!is_object($cmdlogic)) {
       $cmdlogic = new kroombaCmd();
@@ -200,6 +212,15 @@ class kroomba extends eqLogic {
       $cmdlogic->setConfiguration('value', $battery);
       $cmdlogic->save();
       $cmdlogic->event($battery);
+
+      $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'binFull');
+      if (is_object($cmdlogic)) {
+        $binFull = json_decode(implode($result),true)['bin']['full'];
+        $cmdlogic->setConfiguration('value', $binFull);
+        $cmdlogic->save();
+        $cmdlogic->event($binFull);
+      }
+
       log::add('kroomba', 'debug', 'getStatus Battery: ' . $this->getStatus('battery', -2));
     } else {
       log::add('kroomba', 'debug', 'Wrong answer: ' . print_r(json_decode(implode($result),true),true));
