@@ -83,6 +83,7 @@ function getBlid (rid, pass) {
 function checkV2 () {
   var sliceFrom = 13;
   discovery.getRobotPublicInfo(host, function (e, robotData) {
+    console.log('Node version: '+process.version);
     console.log('Robot Data:');
     console.log(robotData);
   });
