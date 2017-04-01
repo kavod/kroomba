@@ -12,10 +12,10 @@ if [ ! -d "$DIRECTORY" ]; then
 fi
 sudo chown -R www-data $DIRECTORY
 echo 10 > /tmp/kroomba_dep
-actual=`nodejs -v|cut -c2-`;
+actual=`nodejs -v`;
 echo "Version actuelle : ${actual}"
 
-if /bin/bash versionComp.sh ${actual} "5.11.1" ">"
+if [[ $actual == *"4.7.3"* || $actual == *"4.8."* || $actual == *"5."* ]]
 then
   echo "Ok, version suffisante";
 else
