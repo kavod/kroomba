@@ -31,7 +31,8 @@
         "Synchronisation réussie": "Synchronisation réussie",
         "Gestion": "Gestion",
         "Configuration": "Configuration",
-        "Add": "Ajouter"
+        "Add": "Ajouter",
+        "Auto-actualisation (cron)": "Auto-actualisation (cron)"
     },
     "plugins\/kroomba\/desktop\/js\/kroomba.js": {
         "Nom de la commande": "Nom de la commande",
@@ -60,6 +61,8 @@
         "Stopped": "A l'arrêt",
         "Stucked !?!": "Bloqué !?!",
         "binFull": "Bac plein",
-        "Unknown: ": "Inconnu : "
+        "Unknown: ": "Inconnu : ",
+        "Error in ": "Erreur pour ",
+        "Expression cron non valide pour ": "Expression cron non valide pour "
     }
 }

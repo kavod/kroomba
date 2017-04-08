@@ -146,6 +146,22 @@ $eqLogics = eqLogic::byType('kroomba');
             </div>
           </div>
 
+          <div class="form-group expertModeVisible">
+            <label class="col-sm-3 control-label">{{Auto-actualisation (cron)}}</label>
+            <div class="col-sm-8">
+              <input type="checkbox" class="eqLogicAttr bootstrapSwitch" data-label-text="{{Activer}}" data-l1key="configuration" data-l2key="cron_isEnable" checked/>
+            </div>
+          </div>
+          <div class="form-group expertModeVisible">
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-2">
+              <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="autorefresh" placeholder="{{Auto-actualisation (cron)}}"/>
+            </div>
+            <div class="col-sm-1">
+              <i class="fa fa-question-circle cursor floatright" id="bt_cronGenerator"></i>
+            </div>
+          </div>
+
         </fieldset>
       </form>
     </div>

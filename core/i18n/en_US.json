@@ -31,7 +31,8 @@
         "Synchronisation réussie": "Synchronization success",
         "Gestion": "Management",
         "Configuration": "Configuration",
-        "Add": "Add"
+        "Add": "Add",
+        "Auto-actualisation (cron)": "Autorefresh (cron)"
     },
     "plugins\/vigilancemeteo\/desktop\/js\/vigilancemeteo.js": {
         "Nom de la commande": "Command name",
@@ -60,6 +61,8 @@
         "Stopped": "Stopped",
         "Stucked !?!": "Stucked !?!",
         "binFull": "Bin full",
-        "Unknown: ": "Unknown: "
+        "Unknown: ": "Unknown: ",
+        "Error in ": "Error in ",
+        "Expression cron non valide pour ": "Uncorrect cron Expression for "
     }
 }

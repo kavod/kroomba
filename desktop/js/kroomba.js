@@ -18,6 +18,12 @@
 $('#typeEq').change(function(){
 });
 
+$('#bt_cronGenerator').on('click',function(){
+   jeedom.getCronSelectModal({},function (result) {
+       $('.eqLogicAttr[data-l1key=configuration][data-l2key=autorefresh]').value(result.value);
+   });
+});
+
 function addCmdToTable(_cmd) {
     if (!isset(_cmd)) {
         var _cmd = {configuration: {}};

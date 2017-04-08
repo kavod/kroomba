@@ -21,17 +21,46 @@ class kroomba extends eqLogic {
 
   public static $_widgetPossibility = array('custom' => true);
 
-  public static function cron5() {
+  public static function cron() {
+		foreach (self::byType('kroomba') as $kroomba) {
+      $cron_isEnable = $kroomba->getConfiguration('cron_isEnable',0);
+			$autorefresh = $kroomba->getConfiguration('autorefresh','');
+			$password = $kroomba->getConfiguration('password','');
+			if ($kroomba->getIsEnable() == 1 && $cron_isEnable == 1 && $password != '' && $autorefresh != '') {
+				try {
+					$c = new Cron\CronExpression($autorefresh, new Cron\FieldFactory);
+					if ($c->isDue()) {
+						try {
+							$kroomba->mission();
+              $kroomba->refreshWidget();
+						} catch (Exception $exc) {
+							log::add('kroomba', 'error', __('Error in ', __FILE__) . $kroomba->getHumanName() . ' : ' . $exc->getMessage());
+						}
+					}
+				} catch (Exception $exc) {
+					log::add('kroomba', 'error', __('Expression cron non valide pour ', __FILE__) . $kroomba->getHumanName() . ' : ' . $autorefresh);
+				}
+			}
+		}
+	}
+
+  /*public static function cron5() {
     foreach (eqLogic::byType('kroomba', true) as $kroomba) {
       $kroomba->mission();
       $kroomba->refreshWidget();
     }
-  }
+  }*/
 
   public function preSave() {
-    log::add('kroomba', 'debug', 'preSaveBegin:getStatus Battery: ' . $this->getStatus('battery', -2));
-    $this->mission();
-    log::add('kroomba', 'debug', 'preSaveEnd:getStatus Battery: ' . $this->getStatus('battery', -2));
+    //log::add('kroomba', 'debug', 'preSaveBegin:getStatus Battery: ' . $this->getStatus('battery', -2));
+    //$this->mission();
+    //log::add('kroomba', 'debug', 'preSaveEnd:getStatus Battery: ' . $this->getStatus('battery', -2));
+		if ($this->getConfiguration('autorefresh') == '') {
+			$this->setConfiguration('autorefresh', '*/5 * * * *');
+		}
+		if ($this->getConfiguration('cron_isEnable',"initial") == 'initial') {
+			$this->setConfiguration('cron_isEnable', 1);
+		}
   }
   public function postSave() {
     log::add('kroomba', 'debug', 'postSaveBegin:getStatus Battery: ' . $this->getStatus('battery', -2));

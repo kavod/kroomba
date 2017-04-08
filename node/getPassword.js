@@ -93,6 +93,8 @@ function checkV2 () {
   });
 
   client.on('data', function (data) {
+    for (var i = 0 ; i < data.length ; i++)
+      console.log(i.toString() +' ' + new Buffer(data).slice(i).toString());
     if (data.length === 2) {
       sliceFrom = 9;
       return;
