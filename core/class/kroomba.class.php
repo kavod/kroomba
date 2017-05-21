@@ -44,17 +44,7 @@ class kroomba extends eqLogic {
 		}
 	}
 
-  /*public static function cron5() {
-    foreach (eqLogic::byType('kroomba', true) as $kroomba) {
-      $kroomba->mission();
-      $kroomba->refreshWidget();
-    }
-  }*/
-
   public function preSave() {
-    //log::add('kroomba', 'debug', 'preSaveBegin:getStatus Battery: ' . $this->getStatus('battery', -2));
-    //$this->mission();
-    //log::add('kroomba', 'debug', 'preSaveEnd:getStatus Battery: ' . $this->getStatus('battery', -2));
 		if ($this->getConfiguration('autorefresh') == '') {
 			$this->setConfiguration('autorefresh', '*/5 * * * *');
 		}
@@ -179,62 +169,45 @@ class kroomba extends eqLogic {
     $cmdlogic->save();
 
     $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'sys');
-    if (!is_object($cmdlogic)) {
-      $cmdlogic = new kroombaCmd();
-      $cmdlogic->setName(__('Sys', __FILE__));
-      $cmdlogic->setEqLogic_id($this->getId());
-      $cmdlogic->setLogicalId('sys');
+    if (is_object($cmdlogic)) {
+      $cmdlogic->remove();
     }
-    $cmdlogic->setIsVisible(0);
-    $cmdlogic->setType('info');
-    $cmdlogic->setSubType('string');
-    $cmdlogic->save();
 
     $this->mission();
-    $this->sys();
     log::add('kroomba', 'debug', 'postSaveEnd:getStatus Battery: ' . $this->getStatus('battery', -2));
   }
 
-  public function sys() {
-    $node_path = realpath(dirname(__FILE__) . '/../../node');
-    $cmd = 'cd ' . $node_path . ' && node sys.js "'
-      . $this->getConfiguration('username','') . '" "'
-      . $this->getConfiguration('password','') . '" "'
-      . $this->getConfiguration('roomba_ip','') .'"';
-    log::add('kroomba', 'debug', 'Lancement sys : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
-    exec($cmd . ' 2>&1',$result);
-    log::add('kroomba_node', 'debug', 'Résultat : ' . implode($result));
-
-    $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'sys');
-    $cmdlogic->setConfiguration('value', implode($result));
-    $cmdlogic->save();
-    $cmdlogic->event(implode($result));
-    return ;
-  }
-
   public function mission() {
-    $node_path = realpath(dirname(__FILE__) . '/../../node');
-    $cmd = 'cd ' . $node_path . ' && node mission.js "'
+    $resource_path = realpath(dirname(__FILE__) . '/../../resources');
+    $cmd = 'cd ' . $resource_path . ' && python roombaStatus.py "'
+      . $this->getConfiguration('roomba_ip','') . '" "'
       . $this->getConfiguration('username','') . '" "'
-      . $this->getConfiguration('password','') . '" "'
-      . $this->getConfiguration('roomba_ip','') .'"';
-    log::add('kroomba', 'debug', 'Lancement mission : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
-    exec($cmd . ' 2>&1',$result);
-    log::add('kroomba', 'debug', 'Résultat : ' . implode($result));
+      . $this->getConfiguration('password','') . '"';
+    log::add('kroomba', 'debug', $cmd . ' : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
+    exec($cmd . ' 2>&1',$result1);
+    log::add('kroomba', 'debug', 'Result : ' . implode($result1));
+
+    $result = "{}";
+    foreach ($result1 as $res)
+    {
+        json_decode($res);
+        if (json_last_error() == JSON_ERROR_NONE)
+          $result = $res;
+    }
 
     $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'mission');
-    if (array_key_exists ('cleanMissionStatus',json_decode(implode($result),true))) {
+    if (array_key_exists ('state',json_decode($result,true))) {
       $cmdlogic->setConfiguration('value', implode($result));
       $cmdlogic->save();
       $cmdlogic->event(implode($result));
 
-      $phase = json_decode(implode($result),true)['cleanMissionStatus']['phase'];
+      $phase = json_decode($result,true)['state']['reported']['cleanMissionStatus']['phase'];
       $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'status');
       $cmdlogic->setConfiguration('value', $phase);
       $cmdlogic->save();
       $cmdlogic->event($phase);
 
-      $battery = json_decode(implode($result),true)['batPct'];
+      $battery = json_decode($result,true)['state']['reported']['batPct'];
       $this->batteryStatus($battery);
       $this->setStatus('battery', $battery);
       $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'battery');
@@ -244,7 +217,7 @@ class kroomba extends eqLogic {
 
       $cmdlogic = kroombaCmd::byEqLogicIdAndLogicalId($this->getId(),'binFull');
       if (is_object($cmdlogic)) {
-        $binFull = json_decode(implode($result),true)['bin']['full'];
+        $binFull = json_decode($result,true)['state']['reported']['bin']['full'];
         $cmdlogic->setConfiguration('value', $binFull);
         $cmdlogic->save();
         $cmdlogic->event($binFull);
@@ -252,7 +225,7 @@ class kroomba extends eqLogic {
 
       log::add('kroomba', 'debug', 'getStatus Battery: ' . $this->getStatus('battery', -2));
     } else {
-      log::add('kroomba', 'debug', 'Wrong answer: ' . print_r(json_decode(implode($result),true),true));
+      log::add('kroomba', 'debug', 'Wrong answer: ' . print_r(json_decode($result,true),true));
     }
     $this->toHtml('mobile');
     $this->toHtml('dashboard');
@@ -260,57 +233,13 @@ class kroomba extends eqLogic {
     return ;
   }
 
-  public function start() {
-    $node_path = realpath(dirname(__FILE__) . '/../../node');
-    $cmd = 'cd ' . $node_path . ' && node start.js "'
+  public function send_command($cmd) {
+    $resource_path = realpath(dirname(__FILE__) . '/../../resources');
+    $cmd = 'cd ' . $resource_path . ' && python roombaCmd.py ' . $cmd . ' "'
+      . $this->getConfiguration('roomba_ip','') . '" "'
       . $this->getConfiguration('username','') . '" "'
-      . $this->getConfiguration('password','') . '" "'
-      . $this->getConfiguration('roomba_ip','') .'"';
-    log::add('kroomba', 'debug', 'Start : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
-    exec($cmd . ' 2>&1',$result);
-    return ;
-  }
-
-  public function pause() {
-    $node_path = realpath(dirname(__FILE__) . '/../../node');
-    $cmd = 'cd ' . $node_path . ' && node pause.js "'
-      . $this->getConfiguration('username','') . '" "'
-      . $this->getConfiguration('password','') . '" "'
-      . $this->getConfiguration('roomba_ip','') .'"';
-    log::add('kroomba', 'debug', 'Pause : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
-    exec($cmd . ' 2>&1',$result);
-    return ;
-  }
-
-  public function resume() {
-    $node_path = realpath(dirname(__FILE__) . '/../../node');
-    $cmd = 'cd ' . $node_path . ' && node resume.js "'
-      . $this->getConfiguration('username','') . '" "'
-      . $this->getConfiguration('password','') . '" "'
-      . $this->getConfiguration('roomba_ip','') .'"';
-    log::add('kroomba', 'debug', 'Resume : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
-    exec($cmd . ' 2>&1',$result);
-    return ;
-  }
-
-  public function stop() {
-    $node_path = realpath(dirname(__FILE__) . '/../../node');
-    $cmd = 'cd ' . $node_path . ' && node stop.js "'
-      . $this->getConfiguration('username','') . '" "'
-      . $this->getConfiguration('password','') . '" "'
-      . $this->getConfiguration('roomba_ip','') .'"';
-    log::add('kroomba', 'debug', 'Stop : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
-    exec($cmd . ' 2>&1',$result);
-    return ;
-  }
-
-  public function dock() {
-    $node_path = realpath(dirname(__FILE__) . '/../../node');
-    $cmd = 'cd ' . $node_path . ' && node dock.js "'
-      . $this->getConfiguration('username','') . '" "'
-      . $this->getConfiguration('password','') . '" "'
-      . $this->getConfiguration('roomba_ip','') .'"';
-    log::add('kroomba', 'debug', 'Dock : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
+      . $this->getConfiguration('password','') . '"';
+    log::add('kroomba', 'debug', $cmd . ' : ' . str_replace($this->getConfiguration('password',''),'****',$cmd));
     exec($cmd . ' 2>&1',$result);
     return ;
   }
@@ -320,19 +249,61 @@ class kroomba extends eqLogic {
     $return['log'] = 'kroomba_dep';
     $request = realpath(dirname(__FILE__) . '/../../node/node_modules/dorita980');
     $return['progress_file'] = '/tmp/kroomba_dep';
+
     if (is_dir($request)) {
-      $return['state'] = 'ok';
+      if (self::dep_test_python_module('roomba') and self::dep_test_python_module('paho.mqtt')) {
+        $return['state'] = 'ok';
+      } else {
+        $return['state'] = 'nok';
+      }
     } else {
       $return['state'] = 'nok';
     }
     return $return;
   }
 
+  public static function dep_node_info() {
+    $request = realpath(dirname(__FILE__) . '/../../node/node_modules/dorita980');
+    return is_dir($request);
+  }
+
+  public static function dep_test_python_module($module) {
+    $resource_path = realpath(dirname(__FILE__) . '/../../resources');
+    exec('cd ' . $resource_path . ' && python -c "import ""' . $module . '""" > /dev/null 2>&1 ; echo $?',$return);
+    if (count($return)>0)
+    {
+      $check = ( intval($return[0]) == 0 );
+      return $check;
+    } else {
+      log::add('kroomba_dep','error',"Unable to check installation of python module $module");
+      return false;
+    }
+  }
+
+  public static function delTree($dir) {
+   $files = array_diff(scandir($dir), array('.','..'));
+    foreach ($files as $file) {
+      (is_dir("$dir/$file")) ? self::delTree("$dir/$file") : unlink("$dir/$file");
+    }
+    return rmdir($dir);
+  }
+
   public static function dependancy_install() {
-    log::add('kroomba','info','Installation des dépéndances nodejs');
+    log::clear('kroomba_dep');
+    log::add('kroomba_dep','debug','Installation des dépendances nodejs');
     $resource_path = realpath(dirname(__FILE__) . '/../../resources');
     passthru('/bin/bash ' . $resource_path . '/nodejs.sh ' . $resource_path
-      . ' > ' . log::getPathToLog('kroomba_dep') . ' 2>&1 &');
+      . ' >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1 &');
+    log::add('kroomba_dep','debug','Installation des dépendances python');
+    $roomba_module_path = $resource_path . '/roomba';
+    if(file_exists($roomba_module_path) and !self::delTree($roomba_module_path))
+    {
+      log::add('kroomba_dep','error',"Deletion of $roomba_module_path failed");
+    }
+    passthru(' ( pip uninstall -y paho-mqtt ; pip install --user paho-mqtt )  >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1 &');
+    passthru('git clone https://github.com/NickWaterton/Roomba980-Python.git "' . $roomba_module_path . '" >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1 &');
+    passthru("touch $roomba_module_path/__init__.py");
+    self::delTree('/tmp/kroomba_dep');
   }
 
   public function toHtml($_version = 'dashboard') {
@@ -436,27 +407,24 @@ class kroombaCmd extends cmd {
 		}
 		$eqLogic = $this->getEqLogic();
 		if ($this->getLogicalId() == 'start') {
-			$eqLogic->start();
+			$eqLogic->send_command("start");
   		$eqLogic->mission();
 		}
 		if ($this->getLogicalId() == 'pause') {
-			$eqLogic->pause();
+			$eqLogic->send_command("pause");
   		$eqLogic->mission();
 		}
 		if ($this->getLogicalId() == 'resume') {
-			$eqLogic->resume();
+			$eqLogic->send_command("resume");
   		$eqLogic->mission();
 		}
 		if ($this->getLogicalId() == 'stop') {
-			$eqLogic->stop();
+			$eqLogic->send_command("stop");
   		$eqLogic->mission();
 		}
 		if ($this->getLogicalId() == 'dock') {
-			$eqLogic->dock();
+			$eqLogic->send_command("dock");
   		$eqLogic->mission();
-		}
-		if ($this->getLogicalId() == 'sys') {
-			$eqLogic->sys();
 		}
   }
 }

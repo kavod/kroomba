@@ -17,12 +17,13 @@
  */
 
 function myDiscover() {
-  $result = array();
-  log::add('kroomba', 'debug', 'myDiscover');
-  $node_path = realpath(dirname(__FILE__) . '/../../node');
-  $cmd = 'cd ' . $node_path . ' && node discover.js';
-  log::add('kroomba', 'debug', 'Découverte des roombas : ' . $cmd);
+  $result = [];
+  $resource_path = realpath(dirname(__FILE__) . '/../../resources');
+  $cmd = 'cd ' . $resource_path . ' && python discover.py';
+  log::add('kroomba', 'debug', 'Discover');
   exec($cmd . ' 2>&1',$roombas);
+  log::add('kroomba', 'debug', 'Result : ' . implode($roombas));
+
   foreach ($roombas as $roomba) {
     log::add('kroomba','debug','Résultat :' . $roomba);
     preg_match('/IP:(\d+\.\d+\.\d+\.\d+),blid:(\w+)/',$roomba,$matches);
