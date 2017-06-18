@@ -9,7 +9,7 @@ from roomba.roomba import Roomba
 #logging.basicConfig(level=logging.DEBUG)
 
 if len(sys.argv) < 4:
-  print("Usage: roombaCmd.py <command> <ip> <username> <password>")
+  print("Usage: roombaStatus.py <username> <password>")
   exit()
 
 os.chdir('./roomba')

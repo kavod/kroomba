@@ -5,7 +5,7 @@ import time
 UDP_IP = "255.255.255.255"
 UDP_PORT = 5678
 MESSAGE = "irobotmcs"
-TIMEOUT = 5
+TIMEOUT = 10
 
 #print "UDP target IP:", UDP_IP
 #print "UDP target port:", UDP_PORT
