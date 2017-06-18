@@ -247,18 +247,18 @@ class kroomba extends eqLogic {
   public static function dependancy_info() {
     $return = array();
     $return['log'] = 'kroomba_dep';
-    $request = realpath(dirname(__FILE__) . '/../../node/node_modules/dorita980');
+    //$request = realpath(dirname(__FILE__) . '/../../node/node_modules/dorita980');
     $return['progress_file'] = '/tmp/kroomba_dep';
 
-    if (is_dir($request)) {
+    //if (is_dir($request)) {
       if (self::dep_test_python_module('roomba') and self::dep_test_python_module('paho.mqtt')) {
         $return['state'] = 'ok';
       } else {
         $return['state'] = 'nok';
       }
-    } else {
+    /*} else {
       $return['state'] = 'nok';
-    }
+    }*/
     return $return;
   }
 
@@ -290,16 +290,17 @@ class kroomba extends eqLogic {
 
   public static function dependancy_install() {
     log::clear('kroomba_dep');
-    log::add('kroomba_dep','debug','Installation des dépendances nodejs');
     $resource_path = realpath(dirname(__FILE__) . '/../../resources');
+    /*log::add('kroomba_dep','debug','Installation des dépendances nodejs');
     passthru('/bin/bash ' . $resource_path . '/nodejs.sh ' . $resource_path
-      . ' >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1 &');
+      . ' >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1 &');*/
     log::add('kroomba_dep','debug','Installation des dépendances python');
     $roomba_module_path = $resource_path . '/roomba';
     if(file_exists($roomba_module_path) and !self::delTree($roomba_module_path))
     {
       log::add('kroomba_dep','error',"Deletion of $roomba_module_path failed");
     }
+    passthru(' ( pip uninstall -y request ; pip install --user request )  >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1 &');
     passthru(' ( pip uninstall -y paho-mqtt ; pip install --user paho-mqtt )  >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1 &');
     passthru('git clone https://github.com/NickWaterton/Roomba980-Python.git "' . $roomba_module_path . '" >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1 &');
     passthru("touch $roomba_module_path/__init__.py");

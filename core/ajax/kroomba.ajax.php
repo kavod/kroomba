@@ -39,8 +39,11 @@ function myDiscover() {
 
 function getPassword($ip,$blid) {
   log::add('kroomba', 'debug', 'getPassword');
-  $node_path = realpath(dirname(__FILE__) . '/../../node');
-  $cmd = 'cd ' . $node_path . ' && node getPassword.js ' . $ip . ' ' . $blid;
+  $resource_path = realpath(dirname(__FILE__) . '/../../resources');
+  $cmd = 'cd ' . $resource_path . ' && python getPassword.py ' . $ip;
+
+  /*$node_path = realpath(dirname(__FILE__) . '/../../node');
+  $cmd = 'cd ' . $node_path . ' && node getPassword.js ' . $ip . ' ' . $blid;*/
   log::add('kroomba', 'debug', 'getPassword:Getting password for ' . $ip . ' : ' . $cmd);
   exec($cmd . ' 2>&1',$result);
   $password="";
