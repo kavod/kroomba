@@ -110,8 +110,8 @@ $eqLogics = eqLogic::byType('kroomba');
             <div class="form-group">
               <label class="col-sm-3 control-label"></label>
               <div class="col-sm-8">
-                <input type="checkbox" class="eqLogicAttr bootstrapSwitch" data-label-text="{{Activer}}" data-l1key="isEnable" checked/>
-                <input type="checkbox" class="eqLogicAttr bootstrapSwitch" data-label-text="{{Visible}}" data-l1key="isVisible" checked/>
+                <input type="checkbox" class="eqLogicAttr" data-label-text="{{Activer}}" data-l1key="isEnable" checked/>
+                <input type="checkbox" class="eqLogicAttr" data-label-text="{{Visible}}" data-l1key="isVisible" checked/>
               </div>
             </div>
 
@@ -149,7 +149,7 @@ $eqLogics = eqLogic::byType('kroomba');
           <div class="form-group expertModeVisible">
             <label class="col-sm-3 control-label">{{Auto-actualisation (cron)}}</label>
             <div class="col-sm-8">
-              <input type="checkbox" class="eqLogicAttr bootstrapSwitch" data-label-text="{{Activer}}" data-l1key="configuration" data-l2key="cron_isEnable" checked/>
+              <input type="checkbox" class="eqLogicAttr" data-label-text="{{Activer}}" data-l1key="configuration" data-l2key="cron_isEnable" checked/>
             </div>
           </div>
           <div class="form-group expertModeVisible">
