@@ -1,0 +1,21 @@
+= K Roomba
+
+== Description
+Plugin permettant de piloter un roomba 960 ou 980.
+Pour cette version de Roomba, pas besoin d'extension matérielle (type RooWifi ou Thinking Cleaner).
+
+Pour le moment, ce plugin permet :
+
+* La détection et appareillage automatique des Roomba sur le réseau local
+* La remontée du statut
+* L'envoi des commandes start / stop / pause / resume / dock
+
+Il comporte un Widget desktop & mobile.
+
+include::configuration.asciidoc[]
+
+include::faq.asciidoc[]
+
+'''
+
+include::changelog.asciidoc[]
