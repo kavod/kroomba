@@ -3,7 +3,7 @@ import os
 import sys
 import time
 import logging
-from roomba.roomba import Roomba
+from roomba import Roomba
 
 #logging.basicConfig(level=logging.DEBUG)
 

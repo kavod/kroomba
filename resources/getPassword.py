@@ -14,13 +14,24 @@ addr = sys.argv[1]
 exec(open('discover.py').read(), globals())
 #execfile('discover.py', addr)
 
-packet = 'f005efcc3b2900'.decode("hex") #this is 0xf0 (mqtt reserved) 0x05(data length) 0xefcc3b2900 (data)
+#packet = 'f005efcc3b2900'.decode("hex") #this is 0xf0 (mqtt reserved) 0x05(data length) 0xefcc3b2900 (data)
+if hasattr(str, 'decode'):
+    # this is 0xf0 (mqtt reserved) 0x05(data length)
+    # 0xefcc3b2900 (data)
+    packet = 'f005efcc3b2900'.decode("hex")
+else:
+    #this is 0xf0 (mqtt reserved) 0x05(data length)
+    # 0xefcc3b2900 (data)
+    packet = bytes.fromhex('f005efcc3b2900')
+
+
 #send socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.settimeout(10)
 
 #ssl wrap
-wrappedSocket = ssl.wrap_socket(sock, ssl_version=ssl.PROTOCOL_TLSv1)
+wrappedSocket = ssl.wrap_socket(
+    sock, ssl_version=ssl.PROTOCOL_TLSv1)
 #connect and send packet
 try:
     wrappedSocket.connect((addr, 8883))
@@ -28,7 +39,7 @@ except Exception as e:
     print("Connection Error %s" % e)
 
 wrappedSocket.send(packet)
-data = ''
+data = b''
 data_len = 35
 while True:
     try:

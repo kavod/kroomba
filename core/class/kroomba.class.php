@@ -247,24 +247,15 @@ class kroomba extends eqLogic {
   public static function dependancy_info() {
     $return = array();
     $return['log'] = 'kroomba_dep';
-    //$request = realpath(dirname(__FILE__) . '/../../node/node_modules/dorita980');
     $return['progress_file'] = '/tmp/kroomba_dep';
 
-    //if (is_dir($request)) {
-      if (self::dep_test_python_module('roomba') and self::dep_test_python_module('paho.mqtt')) {
-        $return['state'] = 'ok';
-      } else {
-        $return['state'] = 'nok';
-      }
-    /*} else {
+    if (self::dep_test_python_module('roomba') and self::dep_test_python_module('paho.mqtt')) {
+      $return['state'] = 'ok';
+    } else {
       $return['state'] = 'nok';
-    }*/
+    }
+    log::add('kroomba_dep','debug',"Dependencies status: " . $return['state']);
     return $return;
-  }
-
-  public static function dep_node_info() {
-    $request = realpath(dirname(__FILE__) . '/../../node/node_modules/dorita980');
-    return is_dir($request);
   }
 
   public static function dep_test_python_module($module) {
@@ -291,19 +282,27 @@ class kroomba extends eqLogic {
   public static function dependancy_install() {
     log::clear('kroomba_dep');
     $resource_path = realpath(dirname(__FILE__) . '/../../resources');
-    /*log::add('kroomba_dep','debug','Installation des dépendances nodejs');
-    passthru('/bin/bash ' . $resource_path . '/nodejs.sh ' . $resource_path
-      . ' >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1 &');*/
     log::add('kroomba_dep','debug','Installation des dépendances python');
     $roomba_module_path = $resource_path . '/roomba';
+    //$roomba_module_path = realpath(dirname(__FILE__) . '/../../resources/roomba');
     if(file_exists($roomba_module_path) and !self::delTree($roomba_module_path))
     {
       log::add('kroomba_dep','error',"Deletion of $roomba_module_path failed");
     }
-    passthru(' ( pip uninstall -y request ; pip install --user request )  >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1 &');
-    passthru(' ( pip uninstall -y paho-mqtt ; pip install --user paho-mqtt )  >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1 &');
-    passthru('git clone https://github.com/NickWaterton/Roomba980-Python.git "' . $roomba_module_path . '" >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1 &');
-    passthru("touch $roomba_module_path/__init__.py");
+    $roomba_module_path = $resource_path . '/Roomba980-Python';
+    //$roomba_module_path = realpath(dirname(__FILE__) . '/../../resources/roomba');
+    if(file_exists($roomba_module_path) and !self::delTree($roomba_module_path))
+    {
+      log::add('kroomba_dep','error',"Deletion of $roomba_module_path failed");
+    }
+    passthru('cd /tmp');
+    passthru(' ( pip uninstall -y six ; pip install --user six )  >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1');
+    passthru(' ( pip uninstall -y paho-mqtt ; pip install --user paho-mqtt )  >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1');
+    //passthru(' ( pip uninstall -y numpy ; pip install --user numpy )  >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1');
+    passthru(' cd ' . $resource_path . ' && git clone https://github.com/NickWaterton/Roomba980-Python.git >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1');
+    passthru(' mv "' . $resource_path . '/Roomba980-Python/roomba" "' . $resource_path . '/" >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1');
+    //passthru(' cd ' . $resource_path . ' && pip install --user roomba >> ' . log::getPathToLog('kroomba_dep') . ' 2>&1 &');
+    //passthru("touch $roomba_module_path/__init__.py");
     self::delTree('/tmp/kroomba_dep');
   }
 

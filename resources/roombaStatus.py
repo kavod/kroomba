@@ -4,7 +4,7 @@ import sys
 import time
 import logging
 import json
-from roomba.roomba import Roomba
+from roomba import Roomba
 
 #logging.basicConfig(level=logging.DEBUG)
 
