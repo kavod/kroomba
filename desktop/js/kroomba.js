@@ -38,7 +38,7 @@ function addCmdToTable(_cmd) {
       tr += '<input class="cmdAttr form-control input-sm" data-l1key="name" style="width : 140px;" placeholder="{{Nom de la commande}}"></td>';
       tr += '</td><td>';
       if (_cmd.subType == 'numeric' || _cmd.subType == 'binary') {
-        tr += '<span><input type="checkbox" class="cmdAttr bootstrapSwitch" data-size="mini" data-label-text="{{Historiser}}" data-l1key="isHistorized" /></span>';
+        tr += '<span><input type="checkbox" class="cmdAttr" data-size="mini" data-label-text="{{Historiser}}" data-l1key="isHistorized" /></span>';
       }
       tr += '</td><td>';
       if (is_numeric(_cmd.id)) {

@@ -25,9 +25,9 @@ if (!isConnect()) {
 <form class="form-horizontal">
   <fieldset>
     <div class="form-group">
-        <label class="col-lg-2 control-label">{{Discover_roombas}}</label>
+        <label class="col-lg-2 control-label">{{Découvrir les roombas}}</label>
         <div class="col-lg-2">
-        <a class="btn btn-warning" id="bt_discover_roomba"><i class='fa fa-refresh'></i> {{Discover_roombas}}</a>
+        <a class="btn btn-warning" id="bt_discover_roomba"><i class='fa fa-refresh'></i> {{Découvrir les roombas}}</a>
         </div>
     </div>
 	</fieldset>
@@ -51,7 +51,6 @@ if (!isConnect()) {
                     return;
                 }
                 loadPage('index.php?v=d&m=kroomba&p=kroomba&saveSuccessFull=1');
-                //$('#div_alert').showAlert({message: '{{Synchronisation réussie}}: ' + data.result, level: 'success'});
             }
         });
     });

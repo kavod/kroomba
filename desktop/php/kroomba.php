@@ -43,7 +43,7 @@ $eqLogics = eqLogic::byType('kroomba');
           <i class="fa fa-plus-circle" style="font-size : 7em;color:#00979c;"></i>
         </center>
         <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;word-wrap: break-word;">
-          <center>{{Add}}</center>
+          <center>{{Ajouter}}</center>
         </span>
       </div>
       <?php
@@ -110,8 +110,8 @@ $eqLogics = eqLogic::byType('kroomba');
             <div class="form-group">
               <label class="col-sm-3 control-label"></label>
               <div class="col-sm-8">
-                <input type="checkbox" class="eqLogicAttr bootstrapSwitch" data-label-text="{{Activer}}" data-l1key="isEnable" checked/>
-                <input type="checkbox" class="eqLogicAttr bootstrapSwitch" data-label-text="{{Visible}}" data-l1key="isVisible" checked/>
+                <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isEnable" checked/>{{Activer}}</label>
+                <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isVisible" checked/>{{Visible}}</label>
               </div>
             </div>
 
@@ -130,26 +130,26 @@ $eqLogics = eqLogic::byType('kroomba');
           </div>
 
           <div id="username" class="form-group">
-            <label class="col-sm-3 control-label">{{Username}}</label>
+            <label class="col-sm-3 control-label">{{Nom du Roomba}}</label>
             <div class="col-sm-3">
               <input type="text" class="eqLogicAttr configuration form-control" id="username_input" data-l1key="configuration" data-l2key="username"/>
             </div>
           </div>
 
           <div id="password" class="form-group">
-            <label class="col-sm-3 control-label">{{Password}}</label>
+            <label class="col-sm-3 control-label">{{Mot de passe}}</label>
             <div class="col-sm-3">
               <input type="password" class="eqLogicAttr configuration form-control" id="password_input" data-l1key="configuration" data-l2key="password"/>
             </div>
             <div class="col-lg-2">
-              <a class="btn btn-info bt_getPassword" id="bt_getPassword"><i class='fa fa-qrcode'></i> {{Get_password}}</a>
+              <a class="btn btn-info bt_getPassword" id="bt_getPassword"><i class='fa fa-qrcode'></i> {{Récupérer le mot de passe}}</a>
             </div>
           </div>
 
           <div class="form-group expertModeVisible">
             <label class="col-sm-3 control-label">{{Auto-actualisation (cron)}}</label>
             <div class="col-sm-8">
-              <input type="checkbox" class="eqLogicAttr bootstrapSwitch" data-label-text="{{Activer}}" data-l1key="configuration" data-l2key="cron_isEnable" checked/>
+              <input type="checkbox" class="eqLogicAttr" data-label-text="{{Activer}}" data-l1key="configuration" data-l2key="cron_isEnable" checked/>
             </div>
           </div>
           <div class="form-group expertModeVisible">
@@ -193,10 +193,15 @@ $eqLogics = eqLogic::byType('kroomba');
   </div>
 </div>
 </div>
-<div id="md_modal_kroomba" title="{{Get_password}}">
+<div id="md_modal_kroomba" title="{{Récupérer le mot de passe}}">
   <p>
     <span class="glyphicon glyphicon-warning-sign" style="float:left; margin:12px 12px 20px 0;"></span>
-    {{Push_button}}
+    {{Premièrement : assurez-vous qu'aucune application mobile iRobot est connectée au Roomba.}}<br />
+    {{Assurez-vous que votre roomba est sur sa base et alimenté (LED vertes allumées).}}<br />
+    {{Puis restez appuyé sur le bouton HOME jusqu'à ce que votre roomba joue une série de sons (environ 2 secondes).}}<br />
+    {{Pour les Roomba 960, il faut rester appuyé à la fois sur HOME et SPOT.}}<br />
+    {{Relachez le bouton, votre roomba va faire clignoter son voyant WIFI.}}<br />
+    {{Puis appuyez sur \"Continuer\".}}
   </p>
 </div>
 <script>
