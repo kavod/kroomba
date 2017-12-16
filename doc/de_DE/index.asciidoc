@@ -2,7 +2,7 @@
 
 == Description
 Plugin permettant de piloter un roomba 960 ou 980.
-Pour cette version de Roomba, pas besoin d'extension matérielle (type RooWifi ou Thinking Cleaner).
+Für diese Roomba Version ist keine Hardwareerweiterung erforderlich (RooWifi oder Thinking Cleaner).
 
 Pour le moment, ce plugin permet :
 

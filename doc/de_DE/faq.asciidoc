@@ -1,7 +1,7 @@
 == FAQ
 
 Problèmes connus :
-Pour connaitre votre version, rendez-vous sur l'application iRobot, Paramètres > A propos de Roomba.
+Um Ihre Version zu erfahren, gehen Sie zu der iRobot-App, Einstellungen > Roomba.
 
 Une nouvelle version du firmware (v2.0.0-34) est en cours de déploiement. Cette mise à jour rendra le plugin non-fonctionnel. ==> corrigé !
 
@@ -9,7 +9,7 @@ Nouvelle version firmware v2.2.5-2 en approche qui rendra très probablement le 
 
 En cas de problème :
 
-Merci d'activer le niveau de log "Debug", et de m'envoyer le résultat ainsi que votre version firmware (voir Problèmes connus)
+Bitte aktivieren Sie die Protokollebene "Debug", und senden Sie mir die Ergebnisse und Ihre Firmware-Version (siehe bekannte Probleme)
 
 N'hésitez pas à partager le fonctionnement du plugin chez vous (qu'il fonctionne ou pas).
 
