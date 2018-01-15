@@ -1,3 +1,3 @@
 == Änderungsprotokoll
 
-- Update: refonte du plugin (passage de NodeJS à Python)
+- Update: Redesign des Plugins (Übergang von NodeJS nach Python)

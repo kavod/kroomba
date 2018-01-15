@@ -1,10 +1,10 @@
 = K Roomba
 
-== Description
-Plugin permettant de piloter un roomba 960 ou 980.
+== Beschreibung
+Plugin zum steuern eines Roomba 960 oder 980 .
 Für diese Roomba Version ist keine Hardwareerweiterung erforderlich (RooWifi oder Thinking Cleaner).
 
-Pour le moment, ce plugin permet :
+Im Moment erlaubt dieses Plugin :
 
 * La détection et appareillage automatique des Roomba sur le réseau local
 * La remontée du statut :

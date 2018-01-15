@@ -1,16 +1,16 @@
 == FAQ
 
-Problèmes connus :
+Bekannte Probleme :
 Um Ihre Version zu erfahren, gehen Sie zu der iRobot-App, Einstellungen > Roomba.
 
-Une nouvelle version du firmware (v2.0.0-34) est en cours de déploiement. Cette mise à jour rendra le plugin non-fonctionnel. ==> corrigé !
+Eine neue Firmware-Version (v2.0.0-34) wird bereitgestellt. Dieses Update wird das Plugin nicht funktionsfähig machen. ==> korrigiert!
 
-Nouvelle version firmware v2.2.5-2 en approche qui rendra très probablement le plugin de nouveau inopérant.
+Neue Version der Firmware v2.2.5-2, die das Plugin höchstwahrscheinlich wieder funktionsunfähig machen wird.
 
-En cas de problème :
+Im Falle eines Problems :
 
 Bitte aktivieren Sie die Protokollebene "Debug", und senden Sie mir die Ergebnisse und Ihre Firmware-Version (siehe bekannte Probleme)
 
-N'hésitez pas à partager le fonctionnement du plugin chez vous (qu'il fonctionne ou pas).
+Fühlen Sie sich frei, den Betrieb des Plugins zu Hause zu teilen (ob es funktioniert oder nicht).
 
-Merci par avance pour votre bienveillance : il s'agit de mon tout premier plugin Jeedom ! :)
+Vielen Dank im Voraus für Ihre Freundlichkeit : Dies ist mein erstes Jeedom Plugin ! :)
